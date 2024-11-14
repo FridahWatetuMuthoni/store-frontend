@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+const BASE_URL = "https://store-backend-7tlk.onrender.com";
+
 const useProductStore = create((set) => ({
   products: [],
 
@@ -11,7 +13,7 @@ const useProductStore = create((set) => ({
     }
 
     try {
-      const response = await fetch("/api/products", {
+      const response = await fetch(`${BASE_URL}/api/products`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newProduct),
@@ -33,8 +35,15 @@ const useProductStore = create((set) => ({
 
   fetchProducts: async () => {
     try {
-      const response = await fetch("/api/products");
+      const response = await fetch(`${BASE_URL}/api/products`);
+      const contentType = response.headers.get("content-type");
+
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Invalid JSON response");
+      }
+
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
         set({ products: data.data });
       }
@@ -45,7 +54,7 @@ const useProductStore = create((set) => ({
 
   deleteProduct: async (pid) => {
     try {
-      const response = await fetch(`/api/products/${pid}`, {
+      const response = await fetch(`${BASE_URL}/api/products/${pid}`, {
         method: "DELETE",
       });
       const data = await response.json();
@@ -67,7 +76,7 @@ const useProductStore = create((set) => ({
 
   updateProduct: async (pid, updatedProduct) => {
     try {
-      const response = await fetch(`/api/products/${pid}`, {
+      const response = await fetch(`${BASE_URL}/api/products/${pid}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProduct),
