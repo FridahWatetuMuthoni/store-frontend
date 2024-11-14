@@ -43,7 +43,6 @@ const useProductStore = create((set) => ({
       }
 
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         set({ products: data.data });
       }
