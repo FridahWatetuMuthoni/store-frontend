@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import useProductStore from "../store/products";
 import { useEffect } from "react";
 import ProductCard from "../components/products/ProductCard";
+import Loading from "../components/products/Loading";
 
 function Home() {
   const { fetchProducts, products } = useProductStore();
@@ -39,23 +40,26 @@ function Home() {
         </SimpleGrid>
 
         {products.length === 0 && (
-          <Text
-            fontSize="xl"
-            textAlign={"center"}
-            fontWeight="bold"
-            color="gray.500"
-          >
-            No products found 😢{" "}
-            <Link to={"/create"}>
-              <Text
-                as="span"
-                color="blue.500"
-                _hover={{ textDecoration: "underline" }}
-              >
-                Create a product
-              </Text>
-            </Link>
-          </Text>
+          <VStack>
+            <Loading />
+            <Text
+              fontSize="xl"
+              textAlign={"center"}
+              fontWeight="bold"
+              color="gray.500"
+            >
+              No products found 😢{" "}
+              <Link to={"/create"}>
+                <Text
+                  as="span"
+                  color="blue.500"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  Create a product
+                </Text>
+              </Link>
+            </Text>
+          </VStack>
         )}
       </VStack>
     </Container>
